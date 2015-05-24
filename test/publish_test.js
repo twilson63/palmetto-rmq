@@ -6,6 +6,6 @@ test('publish', function (t) {
     endpoint: 'amqp://guest:guest@localhost:5672',
     app: 'foo'
   })
-  ee.emit('send', { id: 'widget.request.create', name: 'foobar'})
+  ee.emit('send', { to: 'widget.request.create', name: 'foobar'})
   t.end()
 })

@@ -6,8 +6,8 @@ test('subscribe', function (t) {
     endpoint: 'amqp://guest:guest@localhost:5672',
     app: 'foo'
   })
-  var msg = { id: 'widget.request.create', name: 'foobar'}
-  ee.on(msg.id, function (event) {
+  var msg = { to: 'widget.request.create', name: 'foobar'}
+  ee.on(msg.to, function (event) {
     console.log(event)
     console.log('notified')
     t.end()

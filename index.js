@@ -15,7 +15,7 @@ module.exports = function (config) {
   bus.subscribe(config.app, notify)
 
   function notify (event) {
-    ee.emit(event.id, event)
+    if (event.to) ee.emit(event.to, event)
   }
 
   ee.on('send', function (event) {
