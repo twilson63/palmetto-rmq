@@ -1,0 +1,15 @@
+{
+  "name": "palmetto-rmq",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Tom",
+  "license": "ISC",
+  "devDependencies": {
+    "tap": "^1.1.0"
+  }
+}
