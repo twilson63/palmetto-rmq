@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "tap": "^1.1.0"
+  },
+  "dependencies": {
+    "servicebus": "^1.0.15"
   }
 }
