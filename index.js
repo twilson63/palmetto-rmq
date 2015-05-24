@@ -7,7 +7,10 @@ module.exports = function (config) {
   if (!config.endpoint) throw new Error('endpoint required!') 
   if (!config.app) throw new Error('app required!')
 
-  var bus = require('servicebus').bus({url: config.endpoint})
+  var bus = require('servicebus').bus({
+    url: config.endpoint,
+    vhost: config.vhost || null
+  })
   
   bus.subscribe(config.app, notify)
 
