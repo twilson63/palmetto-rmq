@@ -2,6 +2,8 @@
 
 This module uses rabbitMQ as the pub/sub messaging component for palmetto flow applications
 
+[![Build Status](https://travis-ci.org/twilson63/palmetto-rmq.svg?branch=master)](https://travis-ci.org/twilson63/palmetto-rmq)
+
 ## usage
 
 ### configure

@@ -1,20 +1,28 @@
 var test = require('tap').test
-var pr = require('../')
+var rewire = require('rewire')
+var palmetto = rewire('../')
 
 test('subscribe', function (t) {
-  var ee = pr({ 
+  palmetto.__set__('servicebus', {
+    bus: function () {
+      return {
+        subscribe: function(n, fn) {
+          setTimeout(function () {
+            fn({ to: 'foo.bar', from: 'beepboop' })
+          }, 50)
+        },
+        publish: function () {}
+      }
+    }
+  })
+
+  var ee = palmetto({ 
     endpoint: 'amqp://guest:guest@localhost:5672',
     app: 'foo'
   })
-  var msg = { to: 'widget.request.create', name: 'foobar'}
-  ee.on(msg.to, function (event) {
-    console.log(event)
-    console.log('notified')
+  ee.on('foo.bar', function (event) {
+    t.equals(event.to, 'foo.bar')
+    t.equals(event.from, 'beepboop')
     t.end()
   })
-  setTimeout(function() {
-    ee.emit('send', msg)
-    console.log('sent')
-  }, 500)
-
 })

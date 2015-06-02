@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tap test"
   },
   "keywords": [],
   "author": "Tom",
   "license": "ISC",
   "devDependencies": {
-    "tap": "^1.1.0"
+    "rewire": "^2.3.3",
+    "tap": "^1.2.0"
   },
   "dependencies": {
     "servicebus": "^1.0.15"
