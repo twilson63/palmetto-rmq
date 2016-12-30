@@ -19,6 +19,9 @@ module.exports = function (config) {
   }
 
   ee.on('send', function (event) {
+    console.log('config.listen: ' + config.listen);
+    console.log('config.app: ' + config.app);
+    console.log('event: ' + event);
     bus.publish(config.app, event)
   })
   return ee
