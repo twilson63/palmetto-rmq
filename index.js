@@ -22,7 +22,7 @@ module.exports = function (config) {
     console.log('config.listen: ' + config.listen);
     console.log('config.app: ' + config.app);
     console.log('event: ' + event);
-    bus.publish(config.app, event)
+    config.listen ? bus.send(config.app, event) : bus.publish(config.app, event);
   })
   return ee
 }
