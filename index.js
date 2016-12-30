@@ -4,15 +4,15 @@ var servicebus = require('servicebus')
 
 module.exports = function (config) {
   // validate config
-  if (!config.endpoint) throw new Error('endpoint required!') 
+  if (!config.endpoint) throw new Error('endpoint required!')
   if (!config.app) throw new Error('app required!')
 
   var bus = servicebus.bus({
     url: config.endpoint,
     vhost: config.vhost || null
   })
-  
-  bus.subscribe(config.app, notify)
+
+  config.listen ? bus.listen(config.app, notify) : bus.subscribe(config.app, notify)
 
   function notify (event) {
     if (event.to) ee.emit(event.to, event)
