@@ -1,8 +1,7 @@
-var EventEmitter = require('events').EventEmitter
-var ee = new EventEmitter()
-var servicebus = require('servicebus')
-
 module.exports = function (config) {
+  const servicebus = require('servicebus')
+  const EventEmitter = require('events').EventEmitter
+  const ee = new EventEmitter()
   // validate config
   if (!config.endpoint) throw new Error('endpoint required!')
   if (!config.app) throw new Error('app required!')
