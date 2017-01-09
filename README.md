@@ -1,6 +1,6 @@
 # Palmetto RMQ
 
-This module uses rabbitMQ as the pub/sub messaging component for palmetto flow applications and also supports
+This module uses rabbitMQ as the pub/sub messaging component for palmetto flow applications.
 
 The default behavior works well if you want to have several subscribers that receive all messages.
 
