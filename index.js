@@ -1,7 +1,7 @@
 module.exports = function (config) {
-  const servicebus = require('servicebus')
-  const EventEmitter = require('events').EventEmitter
-  const ee = new EventEmitter()
+  var servicebus = require('servicebus')
+  var EventEmitter = require('events').EventEmitter
+  var ee = new EventEmitter()
   // validate config
   if (!config.endpoint) throw new Error('endpoint required!')
   if (!config.app) throw new Error('app required!')
@@ -11,8 +11,8 @@ module.exports = function (config) {
     vhost: config.vhost || null
   })
 
-  if (config.consumer) {
-    config.roundRobin ? bus.listen(config.app, notify) : bus.subscribe(config.app, notify)
+  if (!config.publishOnly) {
+    config.roundRobin ? bus.listen(config.app, notify) : bus.subscribe(config.app, notify);
   }
 
   function notify (event) {
@@ -20,8 +20,9 @@ module.exports = function (config) {
   }
 
   ee.on('send', function (event) {
-    console.log('config.roundRobin: ' + config.listen);
     console.log('config.app: ' + config.app);
+    console.log('config.publishOnly: ' + !!config.publishOnly);
+    console.log('config.roundRobin: ' + !!config.roundRobin);
     console.log('event: ' + event);
     config.roundRobin ? bus.send(config.app, event) : bus.publish(config.app, event);
   })
