@@ -20,10 +20,6 @@ module.exports = function (config) {
   }
 
   ee.on('send', function (event) {
-    console.log('config.app: ' + config.app);
-    console.log('config.publishOnly: ' + !!config.publishOnly);
-    console.log('config.roundRobin: ' + !!config.roundRobin);
-    console.log('event: ' + event);
     config.roundRobin ? bus.send(config.app, event) : bus.publish(config.app, event);
   })
   return ee

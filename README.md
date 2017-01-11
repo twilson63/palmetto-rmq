@@ -78,7 +78,6 @@ The service listens to the `widget.all.request` svc then uses the `from` node to
 ### Fetching response from scaled service
 
 #### Requesting from a scaled load-balanced service instance
-
 ``` js
 //requestor-service.js
 
@@ -115,8 +114,7 @@ handlerIo.emit('send', {
 })
 ```
 
-#### Receiving response from scaled load-balanced service
-
+#### Handling request in scaled load-balanced service
 ``` js
 //handler-service.js
 
