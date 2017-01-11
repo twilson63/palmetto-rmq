@@ -117,6 +117,7 @@ handlerIo.emit('send', {
 #### Handling request in scaled load-balanced service
 ``` js
 //handler-service.js
+//multiple instances of this service running
 
 var inboundIo = require('@twilson63/palmetto-rmq')({
   endpoint: 'amqp://guest:guest@localhost:5672',
