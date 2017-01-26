@@ -11,7 +11,8 @@ test('listen', function (t) {
             fn({ to: 'foo.bar', from: 'beepboop' })
           }, 50)
         },
-        send: function () {}
+        send: function () {},
+        on: function() {}
       }
     }
   })
