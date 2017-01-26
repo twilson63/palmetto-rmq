@@ -14,6 +14,6 @@
     "tap": "^1.2.0"
   },
   "dependencies": {
-    "servicebus": "^1.0.15"
+    "servicebus": "https://github.com/ryanvm/servicebus.git#feature/expose-addtional-channel-conn-events"
   }
 }
