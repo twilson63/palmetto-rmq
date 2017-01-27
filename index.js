@@ -41,7 +41,7 @@ function establishConnection(config, ee) {
     }
   }
 
-  // Attach listeners to reconnect on closed connections/channels (true by default)
+  // Automatically reconnect on closed connections (true by default)
   if (config.reconnect !== false) {
     bus.on('connection_close', () => {
       bus = establishConnection(config, ee);
