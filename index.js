@@ -21,8 +21,7 @@ function establishConnection(config, ee) {
   });
 
   bus.on('error', (err) => {
-    console.error('Unrecoverable servicebus error', err.stack);
-    process.exit(1);
+    ee.emit('error', err);
   });
 
   ee.removeAllListeners();
@@ -41,8 +40,8 @@ function establishConnection(config, ee) {
     }
   }
 
-  // Attach listeners to reconnect on closed connections/channels
-  if (config.reconnect) {
+  // Attach listeners to reconnect on closed connections/channels (true by default)
+  if (config.reconnect !== false) {
     bus.on('connection_close', () => {
       bus = establishConnection(config, ee);
     });
