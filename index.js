@@ -24,7 +24,8 @@ function establishConnection(config, ee) {
     ee.emit('error', err);
   });
 
-  ee.removeAllListeners();
+  // If this is a reconnection, the old listener is being replaced
+  ee.removeAllListeners(['send']);
   ee.on('send', function (event) {
     config.roundRobin ? bus.send(config.app, event) : bus.publish(config.app, event);
   })
