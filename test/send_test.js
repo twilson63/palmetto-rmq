@@ -10,7 +10,8 @@ test('send', function (t) {
         send: function (n, e) {
           t.equals(n, 'foo', 'should equal app name')
           t.deepEquals(e, { to: 'widget.request.create', name: 'foobar'}, 'should equal object')
-        }
+        },
+        on: function() {}
       }
     }
   })
