@@ -11,7 +11,8 @@ test('subscribe', function (t) {
             fn({ to: 'foo.bar', from: 'beepboop' })
           }, 50)
         },
-        publish: function () {}
+        publish: function () {},
+        on: function() {}
       }
     }
   })
