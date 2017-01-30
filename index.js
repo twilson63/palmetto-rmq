@@ -43,7 +43,7 @@ function establishConnection(config, ee) {
 
   // Automatically reconnect on closed connections (true by default)
   if (config.reconnect !== false) {
-    bus.on('connection_close', () => {
+    bus.on('connection.close', () => {
       bus = establishConnection(config, ee);
     });
   }
