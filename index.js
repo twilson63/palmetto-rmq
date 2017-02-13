@@ -1,9 +1,11 @@
 var servicebus = require('servicebus')
+var debug = require('debug')('palmetto-rmq')
 var EventEmitter = require('events').EventEmitter
 
 module.exports = function (config) {
-
   var ee = new EventEmitter()
+
+  config._attempts = 0;
 
   // validate config
   if (!config.endpoint) throw new Error('endpoint required!')
@@ -15,13 +17,21 @@ module.exports = function (config) {
 }
 
 function establishConnection(config, ee) {
+  config._attempts++;
+
   var bus = servicebus.bus({
     url: config.endpoint,
     vhost: config.vhost || null
   });
 
   bus.on('error', (err) => {
-    ee.emit('error', err);
+    if ((err.code === 'ECONNREFUSED' || err.errno === 'ECONNREFUSED') && config._attempts <= 10) {
+      let retryInterval = Number(config.retryInterval) || 2000;
+      debug('ECONNREFUSED (' + config.endpoint + ' / ' + config.app + '). Reconnection attempt #' + config._attempts + ' in ' + retryInterval + ' milliseconds');
+      setTimeout(() => { establishConnection(config, ee); }, retryInterval);
+    } else {
+      ee.emit('error', err);
+    }
   });
 
   // If this is a reconnection, the old listener is being replaced
