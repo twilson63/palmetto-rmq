@@ -1,6 +1,10 @@
+'use strict'
+
 var servicebus = require('servicebus')
 var debug = require('debug')('palmetto-rmq')
 var EventEmitter = require('events').EventEmitter
+
+var DEFAULT_RETRY_INTERVAL = 5000
 
 module.exports = function (config) {
   var ee = new EventEmitter()
@@ -24,10 +28,12 @@ function establishConnection(config, ee) {
     vhost: config.vhost || null
   });
 
+  bus.on('ready', () => { config._attempts = 1; });
+
   bus.on('error', (err) => {
     if ((err.code === 'ECONNREFUSED' || err.errno === 'ECONNREFUSED') && config._attempts <= 10) {
       // Only happens if the Rabbit host is up, but the service not responsive (at startup)
-      var retryInterval = Number(config.retryInterval) || 2000;
+      var retryInterval = Number(config.retryInterval) || DEFAULT_RETRY_INTERVAL;
       debug('ECONNREFUSED (' + config.endpoint + ' / ' + config.app + '). Reconnection attempt #' + config._attempts + ' in ' + retryInterval + ' ms');
       setTimeout(() => { establishConnection(config, ee); }, retryInterval);
     } else {
