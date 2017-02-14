@@ -1,9 +1,16 @@
+'use strict'
+
 var servicebus = require('servicebus')
+var debug = require('debug')('palmetto-rmq')
 var EventEmitter = require('events').EventEmitter
 
-module.exports = function (config) {
+var DEFAULT_RETRY_INTERVAL = 5000
+var DEFAULT_MAX_RETRIES = 10
 
+module.exports = function (config) {
   var ee = new EventEmitter()
+
+  config._attempts = 0;
 
   // validate config
   if (!config.endpoint) throw new Error('endpoint required!')
@@ -15,13 +22,26 @@ module.exports = function (config) {
 }
 
 function establishConnection(config, ee) {
+  config._attempts++;
+
   var bus = servicebus.bus({
     url: config.endpoint,
     vhost: config.vhost || null
   });
 
+  bus.on('ready', () => { config._attempts = 1; });
+
   bus.on('error', (err) => {
-    ee.emit('error', err);
+    var maxRetries = Number(config.maxRetries) || DEFAULT_MAX_RETRIES;
+    if ((err.code === 'ECONNREFUSED' || err.errno === 'ECONNREFUSED') &&
+        config._attempts <= maxRetries) {
+      // Only happens if the Rabbit host is up, but the service not responsive (at startup)
+      var retryInterval = Number(config.retryInterval) || DEFAULT_RETRY_INTERVAL;
+      debug('ECONNREFUSED (' + config.endpoint + ' / ' + config.app + '). Reconnection attempt #' + config._attempts + ' in ' + retryInterval + ' ms');
+      setTimeout(() => { establishConnection(config, ee); }, retryInterval);
+    } else {
+      ee.emit('error', err);
+    }
   });
 
   // If this is a reconnection, the old listener is being replaced
