@@ -26,6 +26,7 @@ function establishConnection(config, ee) {
 
   bus.on('error', (err) => {
     if ((err.code === 'ECONNREFUSED' || err.errno === 'ECONNREFUSED') && config._attempts <= 10) {
+      // Only happens if the Rabbit host is up, but the service not responsive (at startup)
       var retryInterval = Number(config.retryInterval) || 2000;
       debug('ECONNREFUSED (' + config.endpoint + ' / ' + config.app + '). Reconnection attempt #' + config._attempts + ' in ' + retryInterval + ' ms');
       setTimeout(() => { establishConnection(config, ee); }, retryInterval);
