@@ -1,6 +1,6 @@
 'use strict'
 
-var servicebus = require('servicebus')
+// var servicebus = require('servicebus')
 var debug = require('debug')('palmetto-rmq')
 var EventEmitter = require('events').EventEmitter
 
@@ -24,7 +24,7 @@ module.exports = function (config) {
 function establishConnection(config, ee) {
   config._attempts++;
 
-  var bus = servicebus.bus({
+  var bus = require('servicebus').bus({
     url: config.endpoint,
     vhost: config.vhost || null
   });
